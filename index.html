@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Edição Especial Copa – CT La Praia Sports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{background:#0d0d0d;border-radius:18px;overflow:hidden;font-family:'Barlow',sans-serif;color:#fff;border:2px solid #222;width:100%;max-width:480px}
+.hero{background:#FFD000;position:relative;overflow:hidden;text-align:center}
+.hero-stripe{position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(135deg,transparent,transparent 18px,rgba(0,0,0,0.07) 18px,rgba(0,0,0,0.07) 36px)}
+.hero-inner{position:relative;z-index:1;padding:22px 20px 18px}
+.ct-label{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:4px;color:#333;font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.hero-title{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:#111;letter-spacing:3px;text-transform:uppercase}
+.hero-copa{font-family:'Oswald',sans-serif;font-size:48px;font-weight:900;color:#111;line-height:.9;display:flex;align-items:center;justify-content:center}
+.hero-sub{font-family:'Barlow',sans-serif;font-size:12px;color:#555;margin-top:6px;letter-spacing:1px}
+.step-bar{display:flex;background:#161616;border-bottom:1px solid #222}
+.step{flex:1;padding:10px 4px;text-align:center;font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;color:#444;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase}
+.step.active{color:#FFD000;border-bottom-color:#FFD000}
+.step.done{color:#555}
+.step-dot{display:inline-block;width:16px;height:16px;border-radius:50%;background:#222;color:#444;font-size:9px;font-weight:700;text-align:center;line-height:16px;margin-right:3px;vertical-align:middle;transition:all .2s}
+.step.active .step-dot{background:#FFD000;color:#111}
+.step.done .step-dot{background:#2a7a2a;color:#fff}
+.progress{height:3px;background:#222}
+.progress-bar{height:3px;background:#FFD000;border-radius:2px;transition:width .4s ease}
+.panel{display:none;padding:22px 20px;animation:fadeIn .3s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lbl{font-size:10px;font-weight:600;color:#FFD000;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;display:block}
+.inp{width:100%;background:#181818;border:1.5px solid #2a2a2a;border-radius:9px;padding:11px 14px;color:#fff;font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .2s}
+.inp:focus{border-color:#FFD000}
+.inp::placeholder{color:#444}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.field{margin-bottom:16px}
+.section-title{font-family:'Oswald',sans-serif;font-size:11px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #1e1e1e}
+.sport-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.sport-card{background:#181818;border:2px solid #2a2a2a;border-radius:12px;padding:16px 8px 14px;text-align:center;cursor:pointer;transition:all .25s;position:relative}
+.sport-card:hover{border-color:#FFD000;transform:translateY(-2px)}
+.sport-card.sel{border-color:#FFD000;background:#1a1700}
+.sport-card.sel::after{content:'✓';position:absolute;top:7px;right:9px;font-size:11px;font-weight:700;color:#FFD000}
+.sport-icon{font-size:28px;margin-bottom:6px}
+.sport-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2}
+.sport-tag{font-size:10px;color:#555;margin-top:3px}
+.shirt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.shirt-card{background:#181818;border:2px solid #2a2a2a;border-radius:12px;padding:16px 10px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.shirt-card:hover{border-color:#FFD000;transform:translateY(-2px)}
+.shirt-card.sel{border-color:#FFD000;background:#1a1700}
+.shirt-card.sel::after{content:'✓';position:absolute;top:8px;right:10px;font-size:12px;font-weight:700;color:#FFD000}
+.shirt-visual{width:64px;height:64px;margin:0 auto 10px}
+.shirt-name{font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff}
+.shirt-colors{font-size:11px;color:#666;margin-top:2px}
+.sizes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.sz{background:#181818;border:1.5px solid #2a2a2a;border-radius:8px;padding:9px 14px;color:#777;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Oswald',sans-serif}
+.sz:hover{border-color:#FFD000;color:#fff}
+.sz.sel{border-color:#FFD000;background:#FFD000;color:#111}
+.qty-box{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.qb{width:38px;height:38px;background:#181818;border:1.5px solid #2a2a2a;border-radius:8px;color:#FFD000;font-size:22px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;transition:border-color .2s}
+.qb:hover{border-color:#FFD000}
+.qnum{font-family:'Oswald',sans-serif;font-size:22px;font-weight:700;min-width:28px;text-align:center}
+.price-card{background:#111;border:1.5px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:14px}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+.price-row+.price-row{border-top:1px solid #1e1e1e}
+.pr-label{font-size:13px;color:#666}
+.pr-val{font-family:'Oswald',sans-serif;font-size:15px;color:#fff;font-weight:600}
+.pr-total .pr-label{font-size:14px;color:#aaa;font-weight:600}
+.pr-total .pr-val{font-size:26px;color:#FFD000;font-weight:700}
+.entrada-badge{background:#1a1500;border:1.5px solid #3a2e00;border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.eb-icon{font-size:22px}
+.eb-text{font-size:12px;color:#aaa;line-height:1.5}
+.eb-val{font-family:'Oswald',sans-serif;font-size:18px;color:#FFD000;font-weight:700}
+.pix-box{background:#0f1a0f;border:1.5px solid #1e3d1e;border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.pix-head{font-size:10px;color:#4caf50;letter-spacing:2px;font-weight:600;margin-bottom:6px;text-transform:uppercase}
+.pix-key{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:#fff}
+.pix-note{font-size:11px;color:#555;margin-top:5px}
+.nav-row{display:flex;gap:10px;margin-top:4px}
+.btn-next{flex:1;background:#FFD000;border:none;border-radius:10px;padding:13px;color:#111;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:background .2s}
+.btn-next:hover{background:#e6bc00}
+.btn-next:disabled{background:#555;color:#333;cursor:not-allowed}
+.btn-back{background:#1c1c1c;border:1.5px solid #333;border-radius:10px;padding:13px 18px;color:#888;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-back:hover{border-color:#555;color:#fff}
+.btn-wpp{flex:1;background:#25D366;border:none;border-radius:12px;padding:15px;color:#fff;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
+.btn-wpp:hover{background:#1fb855}
+.summary-card{background:#181818;border:1.5px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:16px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px}
+.sum-row+.sum-row{border-top:1px solid #222}
+.sum-lbl{color:#666}
+.sum-val{color:#fff;font-weight:600;text-align:right}
+.shirt-preview{display:flex;align-items:center;gap:12px;background:#111;border-radius:10px;padding:12px 14px;margin-bottom:16px;border:1px solid #222}
+.sp-name{font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff}
+.sp-size{font-size:12px;color:#666;margin-top:2px}
+/* status de envio */
+.status-box{border-radius:10px;padding:13px 16px;margin-bottom:14px;font-size:13px;font-weight:600;text-align:center;display:none}
+.status-box.loading{display:block;background:#1a1a00;border:1.5px solid #444;color:#FFD000}
+.status-box.success{display:block;background:#0a1f0a;border:1.5px solid #2a7a2a;color:#4caf50}
+.status-box.error{display:block;background:#1f0a0a;border:1.5px solid #7a2a2a;color:#f44336}
+/* config url */
+.config-banner{background:#111;border:1.5px dashed #FFD000;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#aaa;line-height:1.8}
+.config-banner strong{color:#FFD000}
+.config-banner code{background:#222;padding:2px 6px;border-radius:4px;color:#fff;font-size:11px;word-break:break-all}
+.inp-url{margin-top:8px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-stripe"></div>
+    <div class="hero-inner">
+      <div class="ct-label">CT La Praia Sports</div>
+      <div class="hero-title">Edição Especial</div>
+      <div class="hero-copa">🏆 COPA</div>
+      <div class="hero-sub">Preencha os dados para encomendar</div>
+    </div>
+  </div>
+  <div class="progress"><div class="progress-bar" id="pgbar" style="width:33%"></div></div>
+  <div class="step-bar">
+    <div class="step active" id="st1"><span class="step-dot" id="sd1">1</span>Dados</div>
+    <div class="step" id="st2"><span class="step-dot" id="sd2">2</span>Camisa</div>
+    <div class="step" id="st3"><span class="step-dot" id="sd3">3</span>Confirmar</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="panel active" id="p1">
+    <div class="section-title">Dados pessoais</div>
+    <div class="field">
+      <span class="lbl">Nome completo</span>
+      <input class="inp" id="nome" type="text" placeholder="Seu nome completo"/>
+    </div>
+    <div class="row2">
+      <div>
+        <span class="lbl">CPF</span>
+        <input class="inp" id="cpf" type="text" placeholder="000.000.000-00" maxlength="14"/>
+      </div>
+      <div>
+        <span class="lbl">Data de nascimento</span>
+        <input class="inp" id="nasc" type="date"/>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lbl">WhatsApp</span>
+      <input class="inp" id="wpp" type="tel" placeholder="(21) 9xxxx-xxxx"/>
+    </div>
+    <div class="nav-row">
+      <button class="btn-next" onclick="goStep(2)">PRÓXIMO →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="panel" id="p2">
+    <div class="section-title">Estampa nas costas</div>
+    <div class="sport-grid">
+      <div class="sport-card sel" data-sport="VÔLEI" onclick="selectSport(this)">
+        <div class="sport-icon">🏐</div>
+        <div class="sport-name">Vôlei</div>
+        <div class="sport-tag">costas: VÔLEI</div>
+      </div>
+      <div class="sport-card" data-sport="FUTEVÔLEI" onclick="selectSport(this)">
+        <div class="sport-icon">⚽</div>
+        <div class="sport-name">Futevôlei</div>
+        <div class="sport-tag">costas: FUTEVÔLEI</div>
+      </div>
+      <div class="sport-card" data-sport="ATLETA" onclick="selectSport(this)">
+        <div class="sport-icon">🏅</div>
+        <div class="sport-name">Atleta</div>
+        <div class="sport-tag">costas: ATLETA</div>
+      </div>
+    </div>
+    <div class="section-title">Modelo da camisa</div>
+    <div class="shirt-grid">
+      <div class="shirt-card sel" data-model="Amarela" onclick="selectShirt(this)">
+        <div class="shirt-visual">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+            <path d="M10 16L20 10L24 18L32 14L40 18L44 10L54 16L50 30L44 28L44 56L20 56L20 28L14 30Z" fill="#FFD000" stroke="#111" stroke-width="1.5"/>
+            <path d="M20 36L44 36" stroke="#27a844" stroke-width="3" opacity=".6"/>
+            <path d="M20 44L44 44" stroke="#27a844" stroke-width="3" opacity=".6"/>
+          </svg>
+        </div>
+        <div class="shirt-name">Amarela</div>
+        <div class="shirt-colors">Amarelo &amp; Verde</div>
+      </div>
+      <div class="shirt-card" data-model="Azul" onclick="selectShirt(this)">
+        <div class="shirt-visual">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+            <path d="M10 16L20 10L24 18L32 14L40 18L44 10L54 16L50 30L44 28L44 56L20 56L20 28L14 30Z" fill="#1a3fa0" stroke="#FFD000" stroke-width="1.5"/>
+            <path d="M20 36L44 36" stroke="#FFD000" stroke-width="3" opacity=".55"/>
+            <path d="M20 44L44 44" stroke="#FFD000" stroke-width="3" opacity=".55"/>
+          </svg>
+        </div>
+        <div class="shirt-name">Azul</div>
+        <div class="shirt-colors">Azul &amp; Dourado</div>
+      </div>
+    </div>
+    <span class="lbl">Tamanho</span>
+    <div class="sizes" id="sizeRow">
+      <div class="sz" onclick="selectSize(this)">PP</div>
+      <div class="sz" onclick="selectSize(this)">P</div>
+      <div class="sz sel" onclick="selectSize(this)">M</div>
+      <div class="sz" onclick="selectSize(this)">G</div>
+      <div class="sz" onclick="selectSize(this)">GG</div>
+      <div class="sz" onclick="selectSize(this)">XGG</div>
+    </div>
+    <span class="lbl">Quantidade</span>
+    <div class="qty-box">
+      <div class="qb" onclick="chQty(-1)">−</div>
+      <span class="qnum" id="qtyV">1</span>
+      <div class="qb" onclick="chQty(1)">+</div>
+      <span style="font-size:12px;color:#555;">× R$ 80,00 cada</span>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goStep(1)">← VOLTAR</button>
+      <button class="btn-next" onclick="goStep(3)">PRÓXIMO →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="panel" id="p3">
+    <div class="shirt-preview">
+      <div id="prevIcon" style="font-size:32px">🟡</div>
+      <div>
+        <div class="sp-name" id="prevModel">Camisa Amarela</div>
+        <div class="sp-size" id="prevDetail">Tamanho M · 1 unidade · costas: VÔLEI</div>
+      </div>
+    </div>
+    <div class="section-title">Resumo do pedido</div>
+    <div class="summary-card">
+      <div class="sum-row"><span class="sum-lbl">Nome</span><span class="sum-val" id="sNome">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">CPF</span><span class="sum-val" id="sCpf">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Nascimento</span><span class="sum-val" id="sNasc">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">WhatsApp</span><span class="sum-val" id="sWpp">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Costas da camisa</span><span class="sum-val" id="sSport">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Modelo</span><span class="sum-val" id="sModel">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Tamanho</span><span class="sum-val" id="sSize">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Quantidade</span><span class="sum-val" id="sQty">—</span></div>
+    </div>
+    <div class="price-card">
+      <div class="price-row"><span class="pr-label">Preço unitário</span><span class="pr-val">R$ 80,00</span></div>
+      <div class="price-row pr-total"><span class="pr-label">Total</span><span class="pr-val" id="pTotal">R$ 80,00</span></div>
+    </div>
+    <div class="entrada-badge">
+      <div class="eb-icon">⚡</div>
+      <div>
+        <div class="eb-text">50% de entrada para confirmar o pedido</div>
+        <div class="eb-val" id="pEntrada">R$ 40,00</div>
+      </div>
+    </div>
+    <div class="pix-box">
+      <div class="pix-head">🔑 Chave PIX</div>
+      <div class="pix-key">(21) 97623-7777</div>
+      <div class="pix-note">Envie o comprovante pelo WhatsApp após o pagamento</div>
+    </div>
+    <div class="status-box" id="statusBox"></div>
+    <div class="nav-row">
+      <button class="btn-back" id="btnBack3" onclick="goStep(2)">← VOLTAR</button>
+      <button class="btn-wpp" id="btnConfirmar" onclick="confirmar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.528 5.845L.057 23.558a.5.5 0 00.609.609l5.713-1.471A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.86 9.86 0 01-5.03-1.377l-.36-.214-3.733.961.988-3.617-.236-.373A9.86 9.86 0 012.1 12C2.1 6.534 6.534 2.1 12 2.1S21.9 6.534 21.9 12 17.466 21.9 12 21.9z"/></svg>
+        CONFIRMAR PEDIDO
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT
+// =============================================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxg0IDoAmYe74m4FWaCfIDJ-yVtZzr0C3oBc2zOQbdoNOBSu8TaG1QK7ReagepayYInkg/exec';
+// =============================================
+
+let qty=1, model='Amarela', size='M', sport='VÔLEI';
+
+function maskCpf(v){
+  v=v.replace(/\D/g,'').slice(0,11);
+  if(v.length>9) return v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/,'$1.$2.$3-$4');
+  if(v.length>6) return v.replace(/(\d{3})(\d{3})(\d{0,3})/,'$1.$2.$3');
+  if(v.length>3) return v.replace(/(\d{3})(\d{0,3})/,'$1.$2');
+  return v;
+}
+document.getElementById('cpf').addEventListener('input',function(){this.value=maskCpf(this.value)});
+
+function maskWpp(v){
+  v=v.replace(/\D/g,'').slice(0,11);
+  if(v.length>10) return v.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+  if(v.length>6) return v.replace(/(\d{2})(\d{4,5})(\d{0,4})/,'($1) $2-$3');
+  if(v.length>2) return v.replace(/(\d{2})(\d{0,5})/,'($1) $2');
+  return v;
+}
+document.getElementById('wpp').addEventListener('input',function(){this.value=maskWpp(this.value)});
+
+function formatDate(v){
+  if(!v) return '—';
+  const [y,m,d]=v.split('-');
+  return d+'/'+m+'/'+y;
+}
+
+function goStep(n){
+  if(n===2){
+    if(!document.getElementById('nome').value.trim()){alert('Preencha o nome completo!');return}
+    const cpf=document.getElementById('cpf').value.trim();
+    if(!cpf||cpf.length<14){alert('Preencha um CPF válido!');return}
+    if(!document.getElementById('nasc').value){alert('Preencha a data de nascimento!');return}
+    if(!document.getElementById('wpp').value.trim()){alert('Preencha o WhatsApp!');return}
+  }
+  if(n===3){
+    if(!size){alert('Selecione um tamanho!');return}
+    fillSummary();
+  }
+  [1,2,3].forEach(i=>{
+    document.getElementById('p'+i).classList.remove('active');
+    document.getElementById('st'+i).classList.remove('active','done');
+    document.getElementById('sd'+i).textContent=i;
+  });
+  document.getElementById('p'+n).classList.add('active');
+  document.getElementById('st'+n).classList.add('active');
+  for(let i=1;i<n;i++){
+    document.getElementById('st'+i).classList.add('done');
+    document.getElementById('sd'+i).textContent='✓';
+  }
+  document.getElementById('pgbar').style.width=(n===1?'33%':n===2?'66%':'100%');
+}
+
+function selectSport(el){
+  document.querySelectorAll('.sport-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); sport=el.dataset.sport;
+}
+function selectShirt(el){
+  document.querySelectorAll('.shirt-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); model=el.dataset.model;
+}
+function selectSize(el){
+  document.querySelectorAll('.sz').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel'); size=el.textContent;
+}
+function chQty(d){
+  qty=Math.max(1,qty+d);
+  document.getElementById('qtyV').textContent=qty;
+}
+
+function fillSummary(){
+  const total=qty*80, entrada=total*0.5;
+  document.getElementById('sNome').textContent=document.getElementById('nome').value.trim();
+  document.getElementById('sCpf').textContent=document.getElementById('cpf').value.trim();
+  document.getElementById('sNasc').textContent=formatDate(document.getElementById('nasc').value);
+  document.getElementById('sWpp').textContent=document.getElementById('wpp').value.trim();
+  document.getElementById('sSport').textContent=sport;
+  document.getElementById('sModel').textContent='Camisa '+model;
+  document.getElementById('sSize').textContent=size;
+  document.getElementById('sQty').textContent=qty+' unidade'+(qty>1?'s':'');
+  document.getElementById('pTotal').textContent='R$ '+total.toFixed(2).replace('.',',');
+  document.getElementById('pEntrada').textContent='R$ '+entrada.toFixed(2).replace('.',',');
+  document.getElementById('prevModel').textContent='Camisa '+model;
+  document.getElementById('prevDetail').textContent='Tamanho '+size+' · '+qty+' unidade'+(qty>1?'s':'')+' · costas: '+sport;
+  document.getElementById('prevIcon').textContent=model==='Amarela'?'🟡':'🔵';
+}
+
+function setStatus(type, msg){
+  const el=document.getElementById('statusBox');
+  el.className='status-box '+type;
+  el.textContent=msg;
+}
+
+async function confirmar(){
+  const nome=document.getElementById('nome').value.trim();
+  const cpf=document.getElementById('cpf').value.trim();
+  const nasc=document.getElementById('nasc').value;
+  const wpp=document.getElementById('wpp').value.trim();
+  const total=qty*80;
+  const entrada=total*0.5;
+  const agora=new Date().toLocaleString('pt-BR');
+
+  const btn=document.getElementById('btnConfirmar');
+  const btnBack=document.getElementById('btnBack3');
+
+  // Enviar para Google Sheets
+  if(SCRIPT_URL && SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbxg0IDoAmYe74m4FWaCfIDJ-yVtZzr0C3oBc2zOQbdoNOBSu8TaG1QK7ReagepayYInkg/exec'){
+    btn.disabled=true;
+    btnBack.disabled=true;
+    btn.textContent='⏳ Salvando...';
+    setStatus('loading','⏳ Enviando pedido para a planilha...');
+
+    const dados={
+      dataHora: agora,
+      nome, cpf,
+      nascimento: formatDate(nasc),
+      whatsapp: wpp,
+      costas: sport,
+      modelo: 'Camisa '+model,
+      tamanho: size,
+      quantidade: qty,
+      total: 'R$ '+total.toFixed(2).replace('.',','),
+      entrada: 'R$ '+entrada.toFixed(2).replace('.',','),
+      status: 'Aguardando pagamento'
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(dados)
+      });
+      setStatus('success','✅ Pedido salvo na planilha com sucesso!');
+    } catch(e){
+      setStatus('error','⚠️ Erro ao salvar na planilha. Pedido enviado só pelo WhatsApp.');
+    }
+
+    btn.disabled=false;
+    btnBack.disabled=false;
+  }
+
+  // Abrir WhatsApp
+  const msg='🏆 *EDIÇÃO ESPECIAL COPA*\n*CT La Praia Sports*\n──────────────────────────\n📅 Data: '+agora+'\n👤 Nome: '+nome+'\n🪪 CPF: '+cpf+'\n🎂 Nascimento: '+formatDate(nasc)+'\n📱 WhatsApp: '+wpp+'\n──────────────────────────\n👕 Modelo: Camisa '+model+'\n📏 Tamanho: '+size+'\n🔢 Quantidade: '+qty+'\n✍️ Costas: '+sport+'\n──────────────────────────\n💰 Total: R$ '+total.toFixed(2).replace('.',',')+'\n⚡ Entrada (50%): R$ '+entrada.toFixed(2).replace('.',',')+'\n\n_Comprovante do PIX em anexo. Aguardo confirmação!_ ✅';
+  setTimeout(()=>{
+    window.open('https://wa.me/5521976237777?text='+encodeURIComponent(msg),'_blank');
+    btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.528 5.845L.057 23.558a.5.5 0 00.609.609l5.713-1.471A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.86 9.86 0 01-5.03-1.377l-.36-.214-3.733.961.988-3.617-.236-.373A9.86 9.86 0 012.1 12C2.1 6.534 6.534 2.1 12 2.1S21.9 6.534 21.9 12 17.466 21.9 12 21.9z"/></svg> CONFIRMAR PEDIDO';
+  }, 800);
+}
+</script>
+</body>
+</html>
