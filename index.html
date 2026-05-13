@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Edição Especial Copa – CT La Praia Sports</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -42,7 +41,7 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
 .sport-card.sel{border-color:#FFD000;background:#1a1700}
 .sport-card.sel::after{content:'✓';position:absolute;top:7px;right:9px;font-size:11px;font-weight:700;color:#FFD000}
 .sport-icon{font-size:28px;margin-bottom:6px}
-.sport-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2}
+.sport-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:#fff}
 .sport-tag{font-size:10px;color:#555;margin-top:3px}
 .shirt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .shirt-card{background:#181818;border:2px solid #2a2a2a;border-radius:12px;padding:16px 10px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
@@ -83,6 +82,7 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
 .btn-back:hover{border-color:#555;color:#fff}
 .btn-wpp{flex:1;background:#25D366;border:none;border-radius:12px;padding:15px;color:#fff;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
 .btn-wpp:hover{background:#1fb855}
+.btn-wpp:disabled{background:#1a4a2a;cursor:not-allowed}
 .summary-card{background:#181818;border:1.5px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:16px}
 .sum-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px}
 .sum-row+.sum-row{border-top:1px solid #222}
@@ -91,19 +91,31 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
 .shirt-preview{display:flex;align-items:center;gap:12px;background:#111;border-radius:10px;padding:12px 14px;margin-bottom:16px;border:1px solid #222}
 .sp-name{font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff}
 .sp-size{font-size:12px;color:#666;margin-top:2px}
-/* status de envio */
 .status-box{border-radius:10px;padding:13px 16px;margin-bottom:14px;font-size:13px;font-weight:600;text-align:center;display:none}
 .status-box.loading{display:block;background:#1a1a00;border:1.5px solid #444;color:#FFD000}
 .status-box.success{display:block;background:#0a1f0a;border:1.5px solid #2a7a2a;color:#4caf50}
 .status-box.error{display:block;background:#1f0a0a;border:1.5px solid #7a2a2a;color:#f44336}
-/* config url */
-.config-banner{background:#111;border:1.5px dashed #FFD000;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#aaa;line-height:1.8}
-.config-banner strong{color:#FFD000}
-.config-banner code{background:#222;padding:2px 6px;border-radius:4px;color:#fff;font-size:11px;word-break:break-all}
-.inp-url{margin-top:8px;font-size:12px}
 </style>
 </head>
 <body>
+
+<!-- Form oculto que envia para o Apps Script via GET (funciona sem CORS) -->
+<form id="gsForm" method="GET" action="https://script.google.com/macros/s/AKfycbz1sIvKxNYaYY0IpGpKNbDW3I401xG5LPp_ASB5fUPKJmEB3GQCaPe0QKj279Hr0DYAfQ/exec" target="gsFrame" style="display:none">
+  <input type="hidden" name="dataHora" id="f_dataHora"/>
+  <input type="hidden" name="nome" id="f_nome"/>
+  <input type="hidden" name="cpf" id="f_cpf"/>
+  <input type="hidden" name="nascimento" id="f_nascimento"/>
+  <input type="hidden" name="whatsapp" id="f_whatsapp"/>
+  <input type="hidden" name="costas" id="f_costas"/>
+  <input type="hidden" name="modelo" id="f_modelo"/>
+  <input type="hidden" name="tamanho" id="f_tamanho"/>
+  <input type="hidden" name="quantidade" id="f_quantidade"/>
+  <input type="hidden" name="total" id="f_total"/>
+  <input type="hidden" name="entrada" id="f_entrada"/>
+  <input type="hidden" name="status" id="f_status"/>
+</form>
+<iframe name="gsFrame" style="display:none"></iframe>
+
 <div class="wrap">
   <div class="hero">
     <div class="hero-stripe"></div>
@@ -171,7 +183,7 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
     <div class="shirt-grid">
       <div class="shirt-card sel" data-model="Amarela" onclick="selectShirt(this)">
         <div class="shirt-visual">
-          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+          <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
             <path d="M10 16L20 10L24 18L32 14L40 18L44 10L54 16L50 30L44 28L44 56L20 56L20 28L14 30Z" fill="#FFD000" stroke="#111" stroke-width="1.5"/>
             <path d="M20 36L44 36" stroke="#27a844" stroke-width="3" opacity=".6"/>
             <path d="M20 44L44 44" stroke="#27a844" stroke-width="3" opacity=".6"/>
@@ -182,7 +194,7 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
       </div>
       <div class="shirt-card" data-model="Azul" onclick="selectShirt(this)">
         <div class="shirt-visual">
-          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+          <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
             <path d="M10 16L20 10L24 18L32 14L40 18L44 10L54 16L50 30L44 28L44 56L20 56L20 28L14 30Z" fill="#1a3fa0" stroke="#FFD000" stroke-width="1.5"/>
             <path d="M20 36L44 36" stroke="#FFD000" stroke-width="3" opacity=".55"/>
             <path d="M20 44L44 44" stroke="#FFD000" stroke-width="3" opacity=".55"/>
@@ -193,7 +205,7 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
       </div>
     </div>
     <span class="lbl">Tamanho</span>
-    <div class="sizes" id="sizeRow">
+    <div class="sizes">
       <div class="sz" onclick="selectSize(this)">PP</div>
       <div class="sz" onclick="selectSize(this)">P</div>
       <div class="sz sel" onclick="selectSize(this)">M</div>
@@ -229,7 +241,7 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
       <div class="sum-row"><span class="sum-lbl">CPF</span><span class="sum-val" id="sCpf">—</span></div>
       <div class="sum-row"><span class="sum-lbl">Nascimento</span><span class="sum-val" id="sNasc">—</span></div>
       <div class="sum-row"><span class="sum-lbl">WhatsApp</span><span class="sum-val" id="sWpp">—</span></div>
-      <div class="sum-row"><span class="sum-lbl">Costas da camisa</span><span class="sum-val" id="sSport">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Costas</span><span class="sum-val" id="sSport">—</span></div>
       <div class="sum-row"><span class="sum-lbl">Modelo</span><span class="sum-val" id="sModel">—</span></div>
       <div class="sum-row"><span class="sum-lbl">Tamanho</span><span class="sum-val" id="sSize">—</span></div>
       <div class="sum-row"><span class="sum-lbl">Quantidade</span><span class="sum-val" id="sQty">—</span></div>
@@ -262,12 +274,6 @@ body{background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify
 </div>
 
 <script>
-// =============================================
-// COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT
-// =============================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxg0IDoAmYe74m4FWaCfIDJ-yVtZzr0C3oBc2zOQbdoNOBSu8TaG1QK7ReagepayYInkg/exec';
-// =============================================
-
 let qty=1, model='Amarela', size='M', sport='VÔLEI';
 
 function maskCpf(v){
@@ -297,15 +303,11 @@ function formatDate(v){
 function goStep(n){
   if(n===2){
     if(!document.getElementById('nome').value.trim()){alert('Preencha o nome completo!');return}
-    const cpf=document.getElementById('cpf').value.trim();
-    if(!cpf||cpf.length<14){alert('Preencha um CPF válido!');return}
+    if(document.getElementById('cpf').value.trim().length<14){alert('Preencha um CPF válido!');return}
     if(!document.getElementById('nasc').value){alert('Preencha a data de nascimento!');return}
     if(!document.getElementById('wpp').value.trim()){alert('Preencha o WhatsApp!');return}
   }
-  if(n===3){
-    if(!size){alert('Selecione um tamanho!');return}
-    fillSummary();
-  }
+  if(n===3){ fillSummary(); }
   [1,2,3].forEach(i=>{
     document.getElementById('p'+i).classList.remove('active');
     document.getElementById('st'+i).classList.remove('active','done');
@@ -320,22 +322,10 @@ function goStep(n){
   document.getElementById('pgbar').style.width=(n===1?'33%':n===2?'66%':'100%');
 }
 
-function selectSport(el){
-  document.querySelectorAll('.sport-card').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel'); sport=el.dataset.sport;
-}
-function selectShirt(el){
-  document.querySelectorAll('.shirt-card').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel'); model=el.dataset.model;
-}
-function selectSize(el){
-  document.querySelectorAll('.sz').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel'); size=el.textContent;
-}
-function chQty(d){
-  qty=Math.max(1,qty+d);
-  document.getElementById('qtyV').textContent=qty;
-}
+function selectSport(el){document.querySelectorAll('.sport-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');sport=el.dataset.sport;}
+function selectShirt(el){document.querySelectorAll('.shirt-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');model=el.dataset.model;}
+function selectSize(el){document.querySelectorAll('.sz').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');size=el.textContent;}
+function chQty(d){qty=Math.max(1,qty+d);document.getElementById('qtyV').textContent=qty;}
 
 function fillSummary(){
   const total=qty*80, entrada=total*0.5;
@@ -360,61 +350,42 @@ function setStatus(type, msg){
   el.textContent=msg;
 }
 
-async function confirmar(){
+function confirmar(){
   const nome=document.getElementById('nome').value.trim();
   const cpf=document.getElementById('cpf').value.trim();
   const nasc=document.getElementById('nasc').value;
   const wpp=document.getElementById('wpp').value.trim();
-  const total=qty*80;
-  const entrada=total*0.5;
+  const total=qty*80, entrada=total*0.5;
   const agora=new Date().toLocaleString('pt-BR');
 
   const btn=document.getElementById('btnConfirmar');
-  const btnBack=document.getElementById('btnBack3');
+  btn.disabled=true;
+  btn.textContent='⏳ Salvando...';
+  setStatus('loading','⏳ Enviando para a planilha...');
 
-  // Enviar para Google Sheets
-  if(SCRIPT_URL && SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbxg0IDoAmYe74m4FWaCfIDJ-yVtZzr0C3oBc2zOQbdoNOBSu8TaG1QK7ReagepayYInkg/exec'){
-    btn.disabled=true;
-    btnBack.disabled=true;
-    btn.textContent='⏳ Salvando...';
-    setStatus('loading','⏳ Enviando pedido para a planilha...');
+  // Preenche o form oculto e submete via iframe (sem CORS)
+  document.getElementById('f_dataHora').value=agora;
+  document.getElementById('f_nome').value=nome;
+  document.getElementById('f_cpf').value=cpf;
+  document.getElementById('f_nascimento').value=formatDate(nasc);
+  document.getElementById('f_whatsapp').value=wpp;
+  document.getElementById('f_costas').value=sport;
+  document.getElementById('f_modelo').value='Camisa '+model;
+  document.getElementById('f_tamanho').value=size;
+  document.getElementById('f_quantidade').value=qty;
+  document.getElementById('f_total').value='R$ '+total.toFixed(2).replace('.',',');
+  document.getElementById('f_entrada').value='R$ '+entrada.toFixed(2).replace('.',',');
+  document.getElementById('f_status').value='Aguardando pagamento';
+  document.getElementById('gsForm').submit();
 
-    const dados={
-      dataHora: agora,
-      nome, cpf,
-      nascimento: formatDate(nasc),
-      whatsapp: wpp,
-      costas: sport,
-      modelo: 'Camisa '+model,
-      tamanho: size,
-      quantidade: qty,
-      total: 'R$ '+total.toFixed(2).replace('.',','),
-      entrada: 'R$ '+entrada.toFixed(2).replace('.',','),
-      status: 'Aguardando pagamento'
-    };
-
-    try {
-      await fetch(SCRIPT_URL, {
-        method:'POST',
-        mode:'no-cors',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(dados)
-      });
-      setStatus('success','✅ Pedido salvo na planilha com sucesso!');
-    } catch(e){
-      setStatus('error','⚠️ Erro ao salvar na planilha. Pedido enviado só pelo WhatsApp.');
-    }
-
-    btn.disabled=false;
-    btnBack.disabled=false;
-  }
-
-  // Abrir WhatsApp
-  const msg='🏆 *EDIÇÃO ESPECIAL COPA*\n*CT La Praia Sports*\n──────────────────────────\n📅 Data: '+agora+'\n👤 Nome: '+nome+'\n🪪 CPF: '+cpf+'\n🎂 Nascimento: '+formatDate(nasc)+'\n📱 WhatsApp: '+wpp+'\n──────────────────────────\n👕 Modelo: Camisa '+model+'\n📏 Tamanho: '+size+'\n🔢 Quantidade: '+qty+'\n✍️ Costas: '+sport+'\n──────────────────────────\n💰 Total: R$ '+total.toFixed(2).replace('.',',')+'\n⚡ Entrada (50%): R$ '+entrada.toFixed(2).replace('.',',')+'\n\n_Comprovante do PIX em anexo. Aguardo confirmação!_ ✅';
+  // Aguarda 2s e abre WhatsApp
   setTimeout(()=>{
-    window.open('https://wa.me/5521976237777?text='+encodeURIComponent(msg),'_blank');
+    setStatus('success','✅ Pedido salvo na planilha!');
+    btn.disabled=false;
     btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.528 5.845L.057 23.558a.5.5 0 00.609.609l5.713-1.471A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.86 9.86 0 01-5.03-1.377l-.36-.214-3.733.961.988-3.617-.236-.373A9.86 9.86 0 012.1 12C2.1 6.534 6.534 2.1 12 2.1S21.9 6.534 21.9 12 17.466 21.9 12 21.9z"/></svg> CONFIRMAR PEDIDO';
-  }, 800);
+    const msg='🏆 *EDIÇÃO ESPECIAL COPA*\n*CT La Praia Sports*\n──────────────────────\n📅 '+agora+'\n👤 Nome: '+nome+'\n🪪 CPF: '+cpf+'\n🎂 Nasc: '+formatDate(nasc)+'\n📱 WhatsApp: '+wpp+'\n──────────────────────\n👕 Camisa '+model+'\n📏 Tamanho: '+size+'\n🔢 Qtd: '+qty+'\n✍️ Costas: '+sport+'\n──────────────────────\n💰 Total: R$ '+total.toFixed(2).replace('.',',')+'\n⚡ Entrada: R$ '+entrada.toFixed(2).replace('.',',')+'\n\n_PIX: (21) 97623-7777_\n_Envie o comprovante aqui!_ ✅';
+    window.open('https://wa.me/5521976237777?text='+encodeURIComponent(msg),'_blank');
+  }, 2000);
 }
 </script>
 </body>
